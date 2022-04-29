@@ -1,1 +1,1 @@
-# stakin02
+# staking02
