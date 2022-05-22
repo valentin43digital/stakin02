@@ -32,17 +32,17 @@ describe("Token contract", function () {
       expect(await token.owner()).to.equal(await owner.getAddress());
     })
     it("should set the right name", async function () {
-      expect(await token._name()).to.equal(name);
+      expect(await token.name()).to.equal(name);
     })
     it("should set the right symbol", async function () {
-      expect(await token._symbol()).to.equal(symbol);
+      expect(await token.symbol()).to.equal(symbol);
     })
     it("should set the right decimals", async function () {
-      console.log(await token._decimals());
-      expect(await token._decimals()).to.equal(parseInt(decimals));
+      console.log(await token.decimals());
+      expect(await token.decimals()).to.equal(parseInt(decimals));
     })
     it("should set the right total supply", async function () {
-      expect(await token._totalSupply()).to.equal(totalSupply);
+      expect(await token.totalSupply()).to.equal(totalSupply);
     })
     it("should be possible to get balance", async function () {
       expect(await token.connect(addr1).balanceOf(addr1.getAddress())).to.equal(0);

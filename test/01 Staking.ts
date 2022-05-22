@@ -21,7 +21,8 @@ describe("Staking contract", function () {
   const symbol = configts.symbol;
   const decimals = configts.decimals;
   const amount1 = ethers.utils.parseUnits(configts.amount1, decimals);
-  const amount2 = ethers.utils.parseUnits(configts.amount2, decimals);;
+  const amount2 = ethers.utils.parseUnits(configts.amount2, decimals);
+  const amount3 = ethers.utils.parseUnits(configts.amount3, decimals);
   const totalSupply = ethers.utils.parseUnits(configts.totalSupply, decimals);
 
   beforeEach(async function(){
@@ -60,11 +61,11 @@ describe("Staking contract", function () {
       expect(await token.balanceOf(owner.getAddress())).to.equal(balance.sub(amount1));
       expect(await token.balanceOf(staking.address)).to.equal(amount1);
       console.log("Contract balance = ", await token.balanceOf(staking.address));
-      await staking.unstake();
-      //expect(await token.balanceOf(owner.getAddress())).to.equal(balance);
+      await staking.unstake(amount3);
+      expect(await token.balanceOf(owner.getAddress())).to.equal(balance.sub(amount1).add(amount3));
     })
     it("should be impossible to unstake before staking", async function () {
-      await expect(staking.unstake()).to.be.revertedWith("Zero balance staked");
+      await expect(staking.unstake(amount1)).to.be.revertedWith("Zero balance staked");
     })
 
 
