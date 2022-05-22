@@ -6,13 +6,14 @@
 import { ethers } from "hardhat";
 import configts from "../config"
 
-const tokenAddr = configts.name;
+const lpTokenAddress = configts.LPTOKENADDRESS;
+const rewardTokenAddress = configts.REWARDTOKENADDRESS;
 
 async function main() {
 
   // We get the contract to deploy
   const Staking = await ethers.getContractFactory("Staking");
-  const staking = await Staking.deploy(tokenAddr);
+  const staking = await Staking.deploy(lpTokenAddress, rewardTokenAddress);
 
   await staking.deployed();
   
