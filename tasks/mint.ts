@@ -9,4 +9,4 @@ task("mint", "Mints tokens to address")
   await token.mint(taskArgs.address, taskArgs.amount)
 });
 
-//npx hardhat --network rinkeby mint --address "0x108691CA61e04bC948FA2c17300CEEF4eEa83dc9" --amount "1000000000000000000000000"
+//npx hardhat --network rinkeby mint --address "0x830736E9E5A24cA5D653505bfD97A92df558b8DC" --amount "1000000000000000000000000"

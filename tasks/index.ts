@@ -3,3 +3,8 @@ import "./approve";
 import "./balanceOf";
 import "./transfer";
 import "./transferFrom";
+import "./mint";
+import "./stake";
+import "./unstake";
+import "./checkreward";
+import "./claim";
