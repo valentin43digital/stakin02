@@ -14,7 +14,6 @@ contract Staking {
     address public owner;
     address private lpTokenAddress;
     address private rewardTokenAddress;
-    uint public lpCourse;
     
     struct Staked {
         uint256 amount;
@@ -27,19 +26,21 @@ contract Staking {
         owner = msg.sender;
         lpTokenAddress = _lpTokenAddress;
         rewardTokenAddress = _rewardTokenAddress;
-        lpCourse = 2000;
     }
 
     function stake(uint256 amount) public {
         require(stakeholders[msg.sender].amount == 0, "Already staked");
         require(ERC20Token(lpTokenAddress).allowance(msg.sender, address(this)) >= amount, "No enough allowance");
+        checkReward(msg.sender);
         ERC20Token(lpTokenAddress).transferFrom(msg.sender, address(this), amount);
-        stakeholders[msg.sender].amount = amount;
+        stakeholders[msg.sender].amount += amount;
         stakeholders[msg.sender].timeStamp = block.timestamp;
     }
 
     function claim() public {
         require(stakeholders[msg.sender].reward != 0, "Zero reward");
+        require(block.timestamp - stakeholders[msg.sender].timeStamp > 600, "Time not passed");
+        checkReward(msg.sender);
         ERC20Token(rewardTokenAddress).transfer(msg.sender, stakeholders[msg.sender].reward);
         stakeholders[msg.sender].reward = 0;
     }
@@ -47,12 +48,12 @@ contract Staking {
     function unstake(uint256 amount) public {
         require(stakeholders[msg.sender].amount != 0, "Zero balance staked");
         require(stakeholders[msg.sender].amount >= amount, "Not enough balance staked");
+        checkReward(msg.sender);
         ERC20Token(lpTokenAddress).transfer(msg.sender, amount);
         stakeholders[msg.sender].amount -= amount;
     }
 
-    function checkReward() public {
-        require(block.timestamp - stakeholders[msg.sender].timeStamp > 600, "Time not passed");
-        stakeholders[msg.sender].reward = stakeholders[msg.sender].amount * 20 / 100 * lpCourse;
+    function checkReward(address user) internal {
+        stakeholders[user].reward += (block.timestamp - stakeholders[user].timeStamp) / 600 * stakeholders[user].amount * 20 / 100;
     }
 }
