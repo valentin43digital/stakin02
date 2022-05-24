@@ -14,13 +14,19 @@ contract Staking {
     address public owner;
     address private lpTokenAddress;
     address private rewardTokenAddress;
-    
+    uint32 public timePeriod; //seconds
+
     struct Staked {
         uint256 amount;
         uint256 reward;
         uint256 timeStamp;
     }
     mapping(address => Staked) private stakeholders;
+
+    modifier ownerOnly() {
+        require(msg.sender == owner, "You are not owner");
+        _;
+    }
 
     constructor(address _lpTokenAddress, address _rewardTokenAddress) {
         owner = msg.sender;
@@ -29,7 +35,6 @@ contract Staking {
     }
 
     function stake(uint256 amount) public {
-        require(stakeholders[msg.sender].amount == 0, "Already staked");
         require(ERC20Token(lpTokenAddress).allowance(msg.sender, address(this)) >= amount, "No enough allowance");
         checkReward(msg.sender);
         ERC20Token(lpTokenAddress).transferFrom(msg.sender, address(this), amount);
@@ -54,6 +59,10 @@ contract Staking {
     }
 
     function checkReward(address user) internal {
-        stakeholders[user].reward += (block.timestamp - stakeholders[user].timeStamp) / 600 * stakeholders[user].amount * 20 / 100;
+        stakeholders[user].reward += (block.timestamp - stakeholders[user].timeStamp) / timePeriod * stakeholders[user].amount * 20 / 100;
+    }
+
+    function setTimePeriod(uint32 newTimePeriod) public ownerOnly {
+        timePeriod = newTimePeriod;
     }
 }
