@@ -15,7 +15,7 @@ async function main() {
 
   // We get the contract to deploy
   const Token = await ethers.getContractFactory("Token");
-  const token = await Token.deploy(name, symbol, decimals, totalSupply);
+  const token = await Token.deploy(name, symbol, totalSupply);
 
   await token.deployed();
   
@@ -28,3 +28,5 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+// npx hardhat run --network rinkeby scripts/deployToken.ts 

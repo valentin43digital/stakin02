@@ -7,7 +7,7 @@ import { ethers } from "hardhat";
 import configts from "../config";
 
 const lpTokenAddress = configts.LPTOKENADDRESS;
-const rewardTokenAddress = configts.REWARDTOKENADDRESS;
+const rewardTokenAddress = configts.ATOKENADDRESS;
 
 async function main() {
 
@@ -26,3 +26,5 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+// npx hardhat run --network rinkeby scripts/deployStaking.ts 

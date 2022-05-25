@@ -1,7 +1,8 @@
 # Staking task
 
-Staking contract: https://rinkeby.etherscan.io/address/0x830736E9E5A24cA5D653505bfD97A92df558b8DC
+Staking contract verified: https://rinkeby.etherscan.io/address/0x09Dcf174D158aFF02E7565Dff0ED1F8E5c31f3c5#code
 
-LP Token: https://rinkeby.etherscan.io/token/0x46e4ec8aAfeDd4b3f011703B8Fee052b7FfA0745?a=0x4fa8dd85ea24975a3028a05ba0c6bdeada7f7530
+LP Token: https://rinkeby.etherscan.io/address/0x5DBCC0FE8CeAB64249a17Fa1Eca358cC80D873D4
 
-ERC20Token used in LP: https://rinkeby.etherscan.io/token/0xe15F64C33488F432A980e4c60Cf618E697A540b7
+ERC20Token A used in LP: https://rinkeby.etherscan.io/token/0x3C02DfdF9cf4DA6cb807dC00CFb50Bf672249A0F
+ERC20Token B used in LP: https://rinkeby.etherscan.io/token/0x42D8950fDf5EAdDCa3692b45e5226212419C5c5C

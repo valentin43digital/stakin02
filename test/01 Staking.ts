@@ -3,7 +3,6 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber, Contract, Signer } from "ethers";
 import { ethers } from "hardhat";
 import hre from "hardhat";
-import { Token } from "../typechain";
 import config from "../hardhat.config";
 import configts from "../config"
 import {abi as IUniswapV2FactoryABI} from '@uniswap/v2-core/build/IUniswapV2Factory.json'
