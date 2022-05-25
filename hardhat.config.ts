@@ -30,8 +30,9 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         url: process.env.RINKEBY_URL || "",
-        blockNumber: 10718885
-      }
+        blockNumber: 10718885,
+      },
+      initialBaseFeePerGas: 0,
     },
     rinkeby: {
       url: process.env.RINKEBY_URL || "",
