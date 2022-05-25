@@ -7,6 +7,8 @@ interface ERC20Token {
     function transfer(address to, uint256 value) external returns (bool);
     function transferFrom(address from, address to, uint256 value) external returns (bool);
     function approve(address spender, uint256 value) external returns (bool);
+    function mint(address user, uint amount) external;
+    function burn(address user, uint amount) external;
 }
 
 
@@ -21,7 +23,7 @@ contract Staking {
         uint256 reward;
         uint256 timeStamp;
     }
-    mapping(address => Staked) private stakeholders;
+    mapping(address => Staked) public stakeholders;
 
     modifier ownerOnly() {
         require(msg.sender == owner, "You are not owner");
@@ -32,6 +34,7 @@ contract Staking {
         owner = msg.sender;
         lpTokenAddress = _lpTokenAddress;
         rewardTokenAddress = _rewardTokenAddress;
+        timePeriod = 600;
     }
 
     function stake(uint256 amount) public {
@@ -43,8 +46,7 @@ contract Staking {
     }
 
     function claim() public {
-        require(stakeholders[msg.sender].reward != 0, "Zero reward");
-        require(block.timestamp - stakeholders[msg.sender].timeStamp > 600, "Time not passed");
+        require(block.timestamp - stakeholders[msg.sender].timeStamp >= timePeriod, "Time not passed");
         checkReward(msg.sender);
         ERC20Token(rewardTokenAddress).transfer(msg.sender, stakeholders[msg.sender].reward);
         stakeholders[msg.sender].reward = 0;
