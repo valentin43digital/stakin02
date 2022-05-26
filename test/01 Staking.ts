@@ -52,14 +52,12 @@ describe("Staking contract", function () {
     uniswapV2Factory = new ethers.Contract(configts.uniswapV2FactoryAddress, IUniswapV2FactoryABI, owner);
     uniswapV2Router02 = new ethers.Contract(configts.uniswapV2Router02address, IUniswapV2Router02ABI, owner);
     await uniswapV2Factory.createPair(token1.address, token2.address);
-    const poolAddress = await uniswapV2Factory.getPair(token1.address, token2.address);
-    uniswapV2Pair = new ethers.Contract(poolAddress, IUniswapV2PairABI, owner);
-    
     await token1.approve(uniswapV2Router02.address, amount1);
     await token2.approve(uniswapV2Router02.address, amount1);
     let latestBlock = await hre.ethers.provider.getBlock("latest");
     await uniswapV2Router02.addLiquidity(token1.address, token2.address, amount1, amount1, amount2, amount2, owner.address, latestBlock.timestamp+3600);
-
+    const poolAddress = await uniswapV2Factory.getPair(token1.address, token2.address);
+    uniswapV2Pair = new ethers.Contract(poolAddress, IUniswapV2PairABI, owner);
     const Staking = await ethers.getContractFactory("Staking", owner);
     staking = await Staking.deploy(uniswapV2Pair.address, token1.address);
     await staking.deployed();

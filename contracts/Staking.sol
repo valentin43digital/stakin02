@@ -39,15 +39,14 @@ contract Staking {
 
     function stake(uint256 amount) public {
         require(ERC20Token(lpTokenAddress).allowance(msg.sender, address(this)) >= amount, "No enough allowance");
-        checkReward(msg.sender);
+        refreshReward(msg.sender);
         ERC20Token(lpTokenAddress).transferFrom(msg.sender, address(this), amount);
         stakeholders[msg.sender].amount += amount;
-        stakeholders[msg.sender].timeStamp = block.timestamp;
     }
-
+    
     function claim() public {
         require(block.timestamp - stakeholders[msg.sender].timeStamp >= timePeriod, "Time not passed");
-        checkReward(msg.sender);
+        refreshReward(msg.sender);
         ERC20Token(rewardTokenAddress).transfer(msg.sender, stakeholders[msg.sender].reward);
         stakeholders[msg.sender].reward = 0;
     }
@@ -55,13 +54,14 @@ contract Staking {
     function unstake(uint256 amount) public {
         require(stakeholders[msg.sender].amount != 0, "Zero balance staked");
         require(stakeholders[msg.sender].amount >= amount, "Not enough balance staked");
-        checkReward(msg.sender);
+        refreshReward(msg.sender);
         ERC20Token(lpTokenAddress).transfer(msg.sender, amount);
         stakeholders[msg.sender].amount -= amount;
     }
 
-    function checkReward(address user) internal {
+    function refreshReward(address user) internal {
         stakeholders[user].reward += (block.timestamp - stakeholders[user].timeStamp) / timePeriod * stakeholders[user].amount * 20 / 100;
+        stakeholders[msg.sender].timeStamp = block.timestamp;
     }
 
     function setTimePeriod(uint32 newTimePeriod) public ownerOnly {
